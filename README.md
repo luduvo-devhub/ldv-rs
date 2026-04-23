@@ -13,12 +13,11 @@
 ## features
 
 > [!TIP]
-> most users will want to import the prelude, via `luduvo_rs::prelude::*`
+> most users will want to import the prelude, via `ldv_rs::prelude::*`
 
-- user profile data (search by id, one result)
-- user friends data (search by id, multiple results)
-- user querying (search by username, multiple results)
-- places data (search by name, multiple results)
+- creating a `File` instance using `File::from`
+- creating a `Dom` instance using `Dom::from_file`
+- exporting the `Dom` instance using `Dom.to_file`
 
 ## quick start
 
@@ -48,9 +47,9 @@ fn main() -> std::io::Result<()> {
 ## contributors
 
 > [!NOTE]
-> this crate is MIT-licensed. feel free to do whatever with it! all contributions (pull requests, issues) are welcomed, including to the docs.
+> this crate is MIT-licensed. feel free to do whatever with it! all contributions (pull requests, issues) are welcomed.
 
-- [Eeviika](https://github.com/Eeviika) for [#1](https://github.com/luduvo-devhub/luduvo-rs/pull/1) (Small changes)
+- [Uzixt](Uzixt) for [documentation on the .ldv file spec](https://github.com/Uzixt/LdvFileSpec)
 
 ## need help?
 
