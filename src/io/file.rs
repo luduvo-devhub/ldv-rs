@@ -15,6 +15,18 @@ pub struct File {
 }
 
 impl File {
+    pub fn new() -> Self {
+        File {
+            header: FileHeader {
+                magic: *b"LSCN",
+                version: 1,
+                record_count: 0,
+            },
+            
+            records: Vec::new(),
+        }
+    }
+    
     pub fn from(data: &[u8]) -> Result<File, DecodeError> {
         let mut cursor = helpers::Cursor::new(data);
 
@@ -44,5 +56,11 @@ impl File {
         }
 
         Ok(File { header, records })
+    }
+}
+
+impl Default for File {
+    fn default() -> Self {
+        Self::new()
     }
 }
