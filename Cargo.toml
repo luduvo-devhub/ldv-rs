@@ -1,6 +1,11 @@
 [package]
 name = "ldv-rs"
-version = "0.1.2"
+description = "a rust library for manipulating luduvo `.ldv` files"
+version = "0.1.3"
+authors = ["primiti_ve"]
+readme = "README.md"
+repository = "https://github.com/luduvo-devhub/ldv-rs"
+license = "MIT"
 edition = "2024"
 
 [dependencies]
