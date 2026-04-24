@@ -10,7 +10,7 @@ checksum = "75a7e79cc11f1195d9e07bd11509e1d75b51e1f48ddff52f54a25815b4abbde3"
 
 [[package]]
 name = "ldv-rs"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "fixedstr",
  "thiserror",
