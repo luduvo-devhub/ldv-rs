@@ -2,6 +2,12 @@
   <i>ldv-rs</i> is a rust library designed for interacting with the `.ldv` file format.
 </p>
 
+<p align="center">
+   <a href="https://crates.io/crates/ldv-rs">crates.io</a> | <a href="https://discord.gg/FcjTvuWKRk">luduvo development hub</a>
+</p>
+
+---
+
 > [!WARNING]
 > this crate is completely fanmade and has no affiliation with the luduvo devs.
 
