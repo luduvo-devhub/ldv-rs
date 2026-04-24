@@ -302,8 +302,14 @@ impl Dom {
     }
 
     pub fn set_parent(&mut self, child: u64, parent: u64) {
-        if let Some(parent_ent) = self.entities.get_mut(&parent) && !parent_ent.children.contains(&child) {
-            parent_ent.children.push(child);
+        if let Some(child_ent) = self.entities.get_mut(&child) {
+            child_ent.parent = Some(parent);
+        }
+
+        if let Some(parent_ent) = self.entities.get_mut(&parent) {
+            if !parent_ent.children.contains(&child) {
+                parent_ent.children.push(child);
+            }
         }
 
         self.root_entities.retain(|&id| id != child);
@@ -529,7 +535,7 @@ impl Dom {
         if !shapes.is_empty() {
             records.push(Record {
                 component_type: ComponentType::BoxShapeType,
-                value_size: 0,
+                value_size: 8,
                 number_of_entries: shapes.len() as u32,
                 entries: RecordEntries::EntityIds(shapes),
             });

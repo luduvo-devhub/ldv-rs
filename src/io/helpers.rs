@@ -1,5 +1,7 @@
+use std::io::Write;
+
 use crate::errors::DecodeError;
-use crate::records::{self, ComponentType, EntityId, Entry, RecordEntries};
+use crate::records::{self, ComponentType, EntityId, Entry, Record, RecordEntries};
 use crate::{data_types, errors, instances};
 
 pub struct Cursor<'a> {
@@ -332,4 +334,114 @@ pub fn read_record(cursor: &mut Cursor) -> Result<records::Record, DecodeError> 
     }
 
     Ok(record)
+}
+
+pub fn write_record<W: Write>(writer: &mut W, record: &Record) -> std::io::Result<()> {
+    writer.write_all(&(record.component_type.clone() as u16).to_le_bytes())?;
+    writer.write_all(&record.value_size.to_le_bytes())?;
+    writer.write_all(&record.number_of_entries.to_le_bytes())?;
+
+    match &record.entries {
+        RecordEntries::Vec3(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+
+                writer.write_all(&e.value.x.to_le_bytes())?;
+                writer.write_all(&e.value.y.to_le_bytes())?;
+                writer.write_all(&e.value.z.to_le_bytes())?;
+            }
+        }
+
+        RecordEntries::Quat(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+
+                writer.write_all(&e.value.x.to_le_bytes())?;
+                writer.write_all(&e.value.y.to_le_bytes())?;
+                writer.write_all(&e.value.z.to_le_bytes())?;
+                writer.write_all(&e.value.w.to_le_bytes())?;
+            }
+        }
+
+        RecordEntries::Color3(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+
+                writer.write_all(&e.value.r.to_le_bytes())?;
+                writer.write_all(&e.value.g.to_le_bytes())?;
+                writer.write_all(&e.value.b.to_le_bytes())?;
+            }
+        }
+
+        RecordEntries::F32(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+
+                writer.write_all(&e.value.to_le_bytes())?;
+            }
+        }
+
+        RecordEntries::U64(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+
+                writer.write_all(&e.value.to_le_bytes())?;
+            }
+        }
+
+        RecordEntries::Name(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+
+                writer.write_all(&e.value.text.as_bytes())?;
+            }
+        }
+
+        RecordEntries::EntityIds(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_gen.to_le_bytes())?;
+            }
+        }
+
+        RecordEntries::Physics(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+
+                writer.write_all(&e.value.friction.to_le_bytes())?;
+                writer.write_all(&e.value.restitution.to_le_bytes())?;
+                writer.write_all(&e.value.density.to_le_bytes())?;
+            }
+        }
+
+        RecordEntries::Anchored(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+
+                writer.write_all(&[e.value])?;
+            }
+        }
+
+        RecordEntries::ChildOfPair(entries) => {
+            for e in entries {
+                writer.write_all(&e.entity_id.entity_id.to_le_bytes())?;
+                writer.write_all(&e.entity_id.entity_gen.to_le_bytes())?;
+        
+                writer.write_all(&e.value.entity_id.to_le_bytes())?;
+                writer.write_all(&e.value.entity_gen.to_le_bytes())?;
+            }
+        }
+
+        _ => {}
+    }
+
+    Ok(())
 }

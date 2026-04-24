@@ -43,8 +43,7 @@ impl Default for Writer {
 impl File {
     pub fn to_bytes(&self) -> Vec<u8> {
         let mut w = Writer::new();
-
-        // header
+        
         w.write_bytes(&self.header.magic);
         w.write_u32(self.header.version);
         w.write_u16(self.records.len() as u16);

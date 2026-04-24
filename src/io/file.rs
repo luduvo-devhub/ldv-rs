@@ -1,3 +1,5 @@
+use std::io::Write;
+
 use crate::records::{self, ComponentType, EntityId, Entry, RecordEntries};
 use crate::{data_types, errors::DecodeError, io::helpers, instances};
 
@@ -22,11 +24,11 @@ impl File {
                 version: 1,
                 record_count: 0,
             },
-            
+
             records: Vec::new(),
         }
     }
-    
+
     pub fn from(data: &[u8]) -> Result<File, DecodeError> {
         let mut cursor = helpers::Cursor::new(data);
 
@@ -56,6 +58,18 @@ impl File {
         }
 
         Ok(File { header, records })
+    }
+
+    pub fn encode<W: Write>(&self, writer: &mut W) -> std::io::Result<()> {
+        writer.write_all(&self.header.magic)?;
+        writer.write_all(&self.header.version.to_le_bytes())?;
+        writer.write_all(&self.header.record_count.to_le_bytes())?;
+
+        for record in &self.records {
+            helpers::write_record(writer, record)?;
+        }
+
+        Ok(())
     }
 }
 
