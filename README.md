@@ -1,3 +1,10 @@
+> [!CAUTION]
+> this crate has been deprecated!
+>
+> you should use the <a href="https://github.com/luduvo-devhub/luduvo-rs">new luduvo-rs</a> crate instead! this repository will stay up for legacy purposes.
+
+---
+
 <p align="center">
   <i>ldv-rs</i> is a rust library designed for interacting with the `.ldv` file format.
 </p>
